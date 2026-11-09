@@ -1,0 +1,44 @@
+{
+  "id": "ourapps-ae.guest-identity",
+  "name": "Guest identity",
+  "kind": "component",
+  "status": "example",
+  "package": "ourapps-ae/guest-identity",
+  "version": "0.4.0",
+  "ports": [
+    {
+      "id": "guest-identity",
+      "name": "Guest identity",
+      "direction": "output",
+      "kind": "interface",
+      "type": "ae/guest-identity",
+      "version": "1.0.0"
+    }
+  ],
+  "settings": [
+    {
+      "id": "nameMinLength",
+      "name": "Nameminlength",
+      "type": "number",
+      "required": false,
+      "secret": false,
+      "default": 1
+    },
+    {
+      "id": "nameMaxLength",
+      "name": "Namemaxlength",
+      "type": "number",
+      "required": false,
+      "secret": false,
+      "default": 20
+    },
+    {
+      "id": "tokenRotationSeconds",
+      "name": "Tokenrotationseconds",
+      "type": "number",
+      "required": false,
+      "secret": false,
+      "default": 0
+    }
+  ]
+}

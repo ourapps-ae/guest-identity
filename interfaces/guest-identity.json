@@ -1,0 +1,112 @@
+{
+  "id": "guest-identity",
+  "type": "ae/guest-identity",
+  "version": "1.0.0",
+  "operations": {
+    "createIdentityApi": {
+      "arguments": [
+        "settings?:Partial<IdentitySettings>"
+      ],
+      "returns": "IdentityApi {settings,validName(name),checkName(name),claim(book,name,deps),authenticate(book,token,deps),findByName,release} (the settings bound once; server)"
+    },
+    "validateSettings": {
+      "arguments": [
+        "settings?:Partial<IdentitySettings>"
+      ],
+      "returns": "IdentitySettings (RangeError unless 1 <= nameMinLength <= nameMaxLength and tokenRotationSeconds >= 0; server)"
+    },
+    "validName": {
+      "arguments": [
+        "name:unknown",
+        "settings?:IdentitySettings (default 1 to 20)"
+      ],
+      "returns": "boolean (with the bound form createIdentityApi(settings).validName(name) the settings are not passed)"
+    },
+    "checkName": {
+      "arguments": [
+        "name:unknown",
+        "settings:IdentitySettings"
+      ],
+      "returns": "Result<string>"
+    },
+    "claim": {
+      "arguments": [
+        "book:IdentityBook",
+        "name:unknown",
+        "deps:{now,newId,newToken}",
+        "settings:IdentitySettings"
+      ],
+      "returns": "Result<{book:IdentityBook,id:string,token:string,rejoined:boolean}>"
+    },
+    "authenticate": {
+      "arguments": [
+        "book:IdentityBook",
+        "token:string",
+        "deps:{now,newId,newToken}",
+        "settings:IdentitySettings"
+      ],
+      "returns": "{book:IdentityBook,id:string,name:string,rotatedToken:string|null}|null"
+    },
+    "findByName": {
+      "arguments": [
+        "book:IdentityBook",
+        "name:string"
+      ],
+      "returns": "IdentityRecord|undefined"
+    },
+    "release": {
+      "arguments": [
+        "book:IdentityBook",
+        "id:string"
+      ],
+      "returns": "IdentityBook"
+    },
+    "exportAll": {
+      "arguments": [
+        "book:IdentityBook"
+      ],
+      "returns": "string (ndjson, one record per line)"
+    },
+    "importAll": {
+      "arguments": [
+        "text:string"
+      ],
+      "returns": "Result<IdentityBook>"
+    },
+    "recordDigest": {
+      "arguments": [
+        "record:IdentityRecord"
+      ],
+      "returns": "Promise<string> (sha-256 hex)"
+    },
+    "createIdentityStore": {
+      "arguments": [
+        "storage:KeyValueStorage",
+        "settings:IdentitySettings",
+        "keys:IdentityKeys"
+      ],
+      "returns": "{name,setName,session,saveSession,clearSession,replaceToken}"
+    },
+    "clipName": {
+      "arguments": [
+        "input:string",
+        "settings:IdentitySettings"
+      ],
+      "returns": "string"
+    },
+    "nameToSave": {
+      "arguments": [
+        "input:string",
+        "settings:IdentitySettings"
+      ],
+      "returns": "string|null"
+    }
+  },
+  "types": {
+    "IdentitySettings": "{nameMinLength:integer,nameMaxLength:integer,tokenRotationSeconds:integer}",
+    "IdentityRecord": "ae/identity-record 1.0.0, see identity-record.schema.json",
+    "IdentityBook": "{records:{[id:string]:IdentityRecord}}",
+    "wire": "a client sends {name}; the server answers {token,playerId}; later requests carry Authorization: Bearer <token>; a response may carry a rotated token"
+  },
+  "notes": "A consumer that only needs to judge a name (seating's validName) calls createIdentityApi(settings).validName(name), with the installed nameMinLength and nameMaxLength already bound. realtime-rooms requires this interface and calls createIdentityApi(settings).claim, authenticate and release (listed in its interfaces/required/guest-identity.json): claim takes deps.newId for a name it has not seen, authenticate returns rotatedToken for a due or just-replaced token, and release forgets the guest."
+}

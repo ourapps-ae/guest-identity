@@ -1,0 +1,18 @@
+{
+  "sets": [
+    {
+      "rules": { "min": 1, "max": 20 },
+      "cases": [
+        ["Ann", true], ["A", true], ["Mary-Jane O'Neil", true], ["12345678901234567890", true],
+        ["123456789012345678901", false], ["", false], [" ", false], [" Ann", false], ["Ann ", false],
+        ["Zo\u00eb", false], ["tab\there", false], ["Ann\n", false], ["\ud83d\ude00", false]
+      ]
+    },
+    {
+      "rules": { "min": 3, "max": 8 },
+      "cases": [["Al", false], ["Alf", true], ["Alfred12", true], ["Alfred123", false], ["A b", true]]
+    }
+  ],
+  "clip": { "max": 5, "input": "Abcdefgh", "output": "Abcde" },
+  "save": [["  Ann  ", "Ann"], ["   ", null], ["Zo\u00eb", null], ["", null]]
+}

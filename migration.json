@@ -1,0 +1,45 @@
+{
+  "format": 1,
+  "stores": [
+    {
+      "id": "identities",
+      "schema": {
+        "name": "ae/identity-record",
+        "version": "1.0.0",
+        "file": "interfaces/identity-record.schema.json"
+      }
+    }
+  ],
+  "export": [
+    {
+      "format": "ndjson",
+      "portable": true,
+      "operation": "exportAll",
+      "description": "One identity record per line, ordered by id."
+    }
+  ],
+  "import": [
+    {
+      "format": "ndjson",
+      "portable": true,
+      "operation": "importAll"
+    }
+  ],
+  "steps": [],
+  "verification": {
+    "counts": true,
+    "checksums": "sha256 per record (recordDigest)",
+    "sampleReadBack": 20,
+    "endToEnd": "tests/web.test.ts"
+  },
+  "limits": {
+    "maxMegabytes": 10,
+    "requiresStop": false,
+    "cannotPreserve": [
+      "tokens issued after the export was taken"
+    ]
+  },
+  "retention": {
+    "afterRemovalDays": 30
+  }
+}

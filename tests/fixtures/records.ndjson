@@ -1,0 +1,2 @@
+{"id":"id1","name":"Ann","token":"tok1","previousToken":null,"issuedAt":1000,"lastSeenAt":1000}
+{"id":"id2","name":"Bob","token":"tok3","previousToken":"tok2","issuedAt":5000,"lastSeenAt":6000}

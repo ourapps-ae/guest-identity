@@ -1,0 +1,24 @@
+{
+  "format": 1,
+  "jobs": [
+    "guest-identity"
+  ],
+  "profiles": [
+    {
+      "id": "any",
+      "load": {},
+      "cost": "none",
+      "regions": [
+        "any"
+      ],
+      "compliance": [],
+      "provider": {
+        "name": "any storage",
+        "tier": "any",
+        "limitsSource": null
+      },
+      "notes": "Pure functions; no provider limits apply. Names and tokens are personal data in some regions; compliance was not assessed."
+    }
+  ],
+  "notes": "No limits cited; none were checked."
+}

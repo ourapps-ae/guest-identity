@@ -1,0 +1,308 @@
+{
+  "format": 1,
+  "kind": "component",
+  "identity": {
+    "name": "ourapps-ae/guest-identity",
+    "version": "0.4.0",
+    "sourceRevision": "19905b75dbea89fbfd424d67fe26c81aaed0e018",
+    "sourceTreeDigest": "0000000000000000000000000000000000000000000000000000000000000000",
+    "licenceStatus": "deferred"
+  },
+  "facilities": [
+    {
+      "id": "guest-identity",
+      "description": "Guest names, private tokens, rotation and device-side storage of who you are"
+    }
+  ],
+  "documents": {
+    "contract": "CONTRACT.md",
+    "interfaces": [
+      "interfaces/guest-identity.json",
+      "interfaces/identity-record.schema.json",
+      "suitability.json",
+      "migration.json"
+    ],
+    "examples": [
+      "examples/consumer.ts"
+    ],
+    "licenceNotice": "LICENCE"
+  },
+  "collect": [
+    {
+      "id": "nameMinLength",
+      "type": "integer",
+      "grammar": "integer",
+      "required": false,
+      "secret": false,
+      "default": 1
+    },
+    {
+      "id": "nameMaxLength",
+      "type": "integer",
+      "grammar": "integer",
+      "required": false,
+      "secret": false,
+      "default": 20
+    },
+    {
+      "id": "tokenRotationSeconds",
+      "type": "integer",
+      "grammar": "integer",
+      "required": false,
+      "secret": false,
+      "default": 0
+    }
+  ],
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "executable": false
+    },
+    {
+      "path": "INSTRUCTIONS.md",
+      "executable": false
+    },
+    {
+      "path": "LICENCE",
+      "executable": false
+    },
+    {
+      "path": "SOURCE.md",
+      "executable": false
+    },
+    {
+      "path": "examples/consumer.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/android/src/main/java/ae/identity/GuestIdentity.kt",
+      "executable": false
+    },
+    {
+      "path": "implementation/apple/Sources/GuestIdentity.swift",
+      "executable": false
+    },
+    {
+      "path": "implementation/server/identity.ts",
+      "executable": false
+    },
+    {
+      "path": "implementation/web/identity-store.ts",
+      "executable": false
+    },
+    {
+      "path": "interfaces/guest-identity.json",
+      "executable": false
+    },
+    {
+      "path": "interfaces/identity-record.schema.json",
+      "executable": false
+    },
+    {
+      "path": "migration.json",
+      "executable": false
+    },
+    {
+      "path": "suitability.json",
+      "executable": false
+    },
+    {
+      "path": "tests/android/Main.kt",
+      "executable": false
+    },
+    {
+      "path": "tests/apple/main.swift",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/names.json",
+      "executable": false
+    },
+    {
+      "path": "tests/fixtures/records.ndjson",
+      "executable": false
+    },
+    {
+      "path": "tests/native.py",
+      "executable": false
+    },
+    {
+      "path": "tests/web.test.ts",
+      "executable": false
+    },
+    {
+      "path": "tools.lock.json",
+      "executable": false
+    },
+    {
+      "path": "visual/definition.json",
+      "executable": false
+    },
+    {
+      "path": "visual/examples/connected.json",
+      "executable": false
+    },
+    {
+      "path": "visual/output/connected.png",
+      "executable": false
+    },
+    {
+      "path": "visual/output/connected.svg",
+      "executable": false
+    },
+    {
+      "path": "visual/output/description.md",
+      "executable": false
+    }
+  ],
+  "artefacts": [
+    {
+      "source": "implementation/android/src/main/java/ae/identity/GuestIdentity.kt",
+      "destination": "components/guest-identity/android/src/main/java/ae/identity/GuestIdentity.kt",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/apple/Sources/GuestIdentity.swift",
+      "destination": "components/guest-identity/apple/Sources/GuestIdentity.swift",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/server/identity.ts",
+      "destination": "components/guest-identity/server/identity.ts",
+      "template": false,
+      "executable": false
+    },
+    {
+      "source": "implementation/web/identity-store.ts",
+      "destination": "components/guest-identity/web/identity-store.ts",
+      "template": false,
+      "executable": false
+    }
+  ],
+  "dependencies": [],
+  "provides": [
+    {
+      "id": "guest-identity",
+      "type": "ae/guest-identity",
+      "version": "1.0.0",
+      "path": "interfaces/guest-identity.json"
+    }
+  ],
+  "requires": [],
+  "visual": {
+    "definition": "visual/definition.json",
+    "examples": [
+      "visual/examples/connected.json"
+    ],
+    "outputs": [
+      "visual/output/connected.svg",
+      "visual/output/connected.png"
+    ],
+    "descriptions": [
+      "visual/output/description.md"
+    ]
+  },
+  "capabilities": {
+    "hosts": [],
+    "secrets": [],
+    "writes": [
+      "components/guest-identity/android/src/main/java/ae/identity/GuestIdentity.kt",
+      "components/guest-identity/apple/Sources/GuestIdentity.swift",
+      "components/guest-identity/server/identity.ts",
+      "components/guest-identity/web/identity-store.ts"
+    ]
+  },
+  "infrastructure": {
+    "accounts": [],
+    "costStatus": "unmeasured",
+    "deployedReason": "Local library; the identity book is stored by the caller's own storage. No service is deployed by this package."
+  },
+  "verification": [
+    {
+      "id": "web",
+      "root": "package",
+      "argv": [
+        "node",
+        "--test",
+        "tests/web.test.ts"
+      ],
+      "cwd": ".",
+      "prepare": [],
+      "tools": {
+        "node": "26.5.0"
+      },
+      "fixtures": [
+        "examples/consumer.ts",
+        "tests/fixtures/names.json",
+        "tests/fixtures/records.ndjson"
+      ],
+      "locks": [
+        "tools.lock.json"
+      ],
+      "network": false,
+      "timeoutSeconds": 120,
+      "expectedExit": 0,
+      "scope": "required-local",
+      "requirements": []
+    },
+    {
+      "id": "apple",
+      "root": "package",
+      "argv": [
+        "python3",
+        "tests/native.py",
+        "apple"
+      ],
+      "cwd": ".",
+      "prepare": [],
+      "tools": {
+        "python3": "3.12.8",
+        "swiftc": "6.4.2"
+      },
+      "fixtures": [
+        "tests/apple/main.swift"
+      ],
+      "locks": [
+        "tools.lock.json"
+      ],
+      "network": false,
+      "timeoutSeconds": 120,
+      "expectedExit": 0,
+      "scope": "platform",
+      "requirements": []
+    },
+    {
+      "id": "android",
+      "root": "package",
+      "argv": [
+        "python3",
+        "tests/native.py",
+        "android"
+      ],
+      "cwd": ".",
+      "prepare": [],
+      "tools": {
+        "python3": "3.12.8",
+        "kotlinc": "2.2.0",
+        "java": "26.0.1"
+      },
+      "fixtures": [
+        "tests/android/Main.kt"
+      ],
+      "locks": [
+        "tools.lock.json"
+      ],
+      "network": false,
+      "timeoutSeconds": 120,
+      "expectedExit": 0,
+      "scope": "platform",
+      "requirements": []
+    }
+  ],
+  "upgrade": {
+    "policy": "patch",
+    "migration": "files-only"
+  }
+}
