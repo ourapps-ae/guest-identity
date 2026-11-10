@@ -1,16 +1,46 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "ae/identity-record",
-  "version": "1.0.0",
+  "x-version": "1.0.0",
+  "description": "One guest's identity record, as kept in a book and written one per line by exportAll.",
   "type": "object",
-  "required": ["id", "name", "token", "previousToken", "issuedAt", "lastSeenAt"],
+  "required": [
+    "id",
+    "name",
+    "token",
+    "previousToken",
+    "issuedAt",
+    "lastSeenAt"
+  ],
   "additionalProperties": false,
   "properties": {
-    "id": { "type": "string", "minLength": 1 },
-    "name": { "type": "string", "minLength": 1 },
-    "token": { "type": "string", "minLength": 1, "description": "Private. The current bearer token." },
-    "previousToken": { "type": ["string", "null"], "description": "Private. The replaced token, accepted for one rotation period." },
-    "issuedAt": { "type": "integer", "description": "Milliseconds since the epoch when the current token was issued." },
-    "lastSeenAt": { "type": "integer", "description": "Milliseconds since the epoch of the last authenticated request." }
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "token": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Private. The current bearer token."
+    },
+    "previousToken": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Private. The replaced token, accepted for one rotation period."
+    },
+    "issuedAt": {
+      "type": "integer",
+      "description": "Milliseconds since the epoch when the current token was issued."
+    },
+    "lastSeenAt": {
+      "type": "integer",
+      "description": "Milliseconds since the epoch of the last authenticated request."
+    }
   }
 }

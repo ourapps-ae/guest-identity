@@ -208,3 +208,30 @@ test("room use (realtime-rooms services.identity): claim keeps a known id, relea
   const refused = api.claim(freed, "", d);
   assert.ok(!refused.ok && refused.error.code === "badName");
 });
+
+// ---- the interface document (OpenRPC 1.3.2) ----
+
+test("every method in interfaces/guest-identity.json exists in the implementation for the languages it is tagged with", async () => {
+  const doc = JSON.parse(readFileSync(new URL("../interfaces/guest-identity.json", import.meta.url), "utf8"));
+  assert.equal(doc.openrpc, "1.3.2");
+  assert.equal(doc.info.title, "ae/guest-identity");
+  const server = await import("../implementation/server/identity.ts");
+  const web = await import("../implementation/web/identity-store.ts");
+  const api = server.createIdentityApi() as Record<string, unknown>;
+  const store = web.createIdentityStore(memory(), settings()) as Record<string, unknown>;
+  const swift = readFileSync(new URL("../implementation/apple/Sources/GuestIdentity.swift", import.meta.url), "utf8");
+  const kotlin = readFileSync(new URL("../implementation/android/src/main/java/ae/identity/GuestIdentity.kt", import.meta.url), "utf8");
+  const exported = { ...server, ...web } as Record<string, unknown>;
+  for (const method of doc.methods) {
+    const tags = method.tags.map((t: { name: string }) => t.name);
+    const [owner, member] = method.name.includes(".") ? method.name.split(".") : [null, method.name];
+    if (tags.includes("typescript")) {
+      const target = owner === "IdentityApi" ? api[member] : owner === "IdentityStore" ? store[member] : exported[member];
+      assert.equal(typeof target, "function", method.name);
+    }
+    for (const [language, source] of [["swift", swift], ["kotlin", kotlin]] as const) {
+      if (!tags.includes(language)) continue;
+      assert.match(source, new RegExp(member === "init" ? `(struct|class) ${owner}\\b` : `(func|fun|var|val) ${member}\\b`), `${language} ${method.name}`);
+    }
+  }
+});

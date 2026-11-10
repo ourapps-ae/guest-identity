@@ -24,7 +24,8 @@ Dependencies: none.
 `tools.lock.json` pins verification tools: node 26.5.0, python3 3.12.8, swiftc 6.4.2, kotlinc 2.2.0, java 26.0.1. Licence wording remains deferred.
 
 ## Provided interfaces
-- `interfaces/guest-identity.json` defines `guest-identity` (ae/guest-identity) version 1.0.0.
+- `interfaces/guest-identity.json` defines `guest-identity` (ae/guest-identity) version 1.0.0 as an OpenRPC 1.3.2 document: one method per function, tagged with the languages that provide it (`typescript`, `swift`, `kotlin`); the bound functions are `IdentityApi.*` and the device store's are `IdentityStore.*`. Parameters, results and the identity book are JSON Schema 2020-12; `createIdentityApi` and `validateSettings` list the `RangeError` they throw.
+- `interfaces/identity-record.schema.json` is the JSON Schema 2020-12 document of one stored record (ae/identity-record 1.0.0).
 
 ## Required interfaces
 None.
@@ -39,7 +40,7 @@ Server: `createIdentityApi(settings)` binds the three settings once and gives `v
 No service. The identity book is plain data held by the caller (the room's own storage in the recipe). Tokens are stored as issued, as in the recipe, so the storage must be private to the server.
 
 ## Verification
-Required-local: `node --test tests/web.test.ts` checks the name rules against `tests/fixtures/names.json`, claim and return from another device, token cancellation, rotation and the one-period catch-up, release, ndjson export and import with a record digest, the bound `validName` against the same fixture, the bound claim and authenticate, the calls a room makes (a known id offered by the room is kept for a new name, a rejoin returns the same id and ends the old token, release frees the name, a rotated token is returned without changing the book given), settings checks, the device store and the example. Platform: `python3 tests/native.py apple` compiles and runs the Swift checks of the same fixture; `python3 tests/native.py android` compiles the Kotlin checks (needs kotlinc, not installed on the authoring machine, so not run there).
+Required-local: `node --test tests/web.test.ts` checks the name rules against `tests/fixtures/names.json`, claim and return from another device, token cancellation, rotation and the one-period catch-up, release, ndjson export and import with a record digest, the bound `validName` against the same fixture, the bound claim and authenticate, the calls a room makes (a known id offered by the room is kept for a new name, a rejoin returns the same id and ends the old token, release frees the name, a rotated token is returned without changing the book given), settings checks, the device store, the example, and that every method in `interfaces/guest-identity.json` exists in the implementation for each language it is tagged with. Platform: `python3 tests/native.py apple` compiles and runs the Swift checks of the same fixture; `python3 tests/native.py android` compiles the Kotlin checks (needs kotlinc, not installed on the authoring machine, so not run there).
 
 - `node --test tests/web.test.ts` (web, required-local; tools: node 26.5.0)
 - `python3 tests/native.py apple` (apple, platform; tools: python3 3.12.8, swiftc 6.4.2)

@@ -17,5 +17,5 @@ Reference revision: `19905b75dbea89fbfd424d67fe26c81aaed0e018`. Paths are under 
 
 - The name screen layout and text, the REST clients, the room and game state, the display (table viewer) join, video grants issued at join.
 - The recipe's name rule is exact-match and ASCII only; this component keeps both on purpose.
-- `createIdentityApi`, `validateSettings` (`generated-adapter`, in `implementation/server/identity.ts`): written to `components/seating/interfaces/required/guest-identity.json` (`validName(name)`). The recipe checked names with the constants `NAME_MIN` and `NAME_MAX`; the bound form carries the installed limits instead.
+- `createIdentityApi`, `validateSettings` (`generated-adapter`, in `implementation/server/identity.ts`): written to `components/seating/interfaces/required-guest-identity.json` (`validName(name)`). The recipe checked names with the constants `NAME_MIN` and `NAME_MAX`; the bound form carries the installed limits instead.
 - The room-facing calls (`claim` with a caller-supplied `newId`, `authenticate` with `rotatedToken`, `release`) are `createIdentityApi` operations; they match the room's token handling in the frozen `server/src/room.ts` lines 120-135 (token per join, replaced on rejoin, dropped on leave), with rotation. `tests/web.test.ts` has a test of exactly these calls.
