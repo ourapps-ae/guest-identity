@@ -3,7 +3,7 @@
 ## For the agent
 Select this component for any application where people take part without accounts. Set the three settings from the application's name length limits and how often tokens should change. Connect the provided `guest-identity` to presence, seating and the room server. Do not use it where real account security is needed. realtime-rooms requires this interface: connect `guest-identity` to its `guest-identity` port, and have the server pass `createIdentityApi(settings)` as `services.identity`.
 
-- Select package `ourapps-ae/guest-identity` version `0.5.1`.
+- Select package `ourapps-ae/guest-identity` version `0.5.2`.
 - Settings to configure:
   - `nameMinLength` (integer; optional; default `1`)
   - `nameMaxLength` (integer; optional; default `20`)
