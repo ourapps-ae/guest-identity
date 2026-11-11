@@ -21,7 +21,7 @@ Three settings. `nameMinLength` (default 1) and `nameMaxLength` (default 20) bou
 - `implementation/web/identity-store.ts` -> `components/guest-identity/web/identity-store.ts`
 
 Dependencies: none.
-`tools.lock.json` pins verification tools: node 26.5.0, python3 3.12.8, swiftc 6.4.2, kotlinc 2.2.0, java 26.0.1. Licence wording remains deferred.
+`tools.lock.json` pins verification tools: node 26.5, python3 3.12, swiftc 6.4, kotlinc 2.2, java 26.0. Licence wording remains deferred.
 
 ## Provided interfaces
 - `interfaces/guest-identity.json` defines `guest-identity` (ae/guest-identity) version 1.0.0 as an OpenRPC 1.3.2 document: one method per function, tagged with the languages that provide it (`typescript`, `swift`, `kotlin`); the bound functions are `IdentityApi.*` and the device store's are `IdentityStore.*`. Parameters, results and the identity book are JSON Schema 2020-12; `createIdentityApi` and `validateSettings` list the `RangeError` they throw.
@@ -42,9 +42,9 @@ No service. The identity book is plain data held by the caller (the room's own s
 ## Verification
 Required-local: `node --test tests/web.test.ts` checks the name rules against `tests/fixtures/names.json`, claim and return from another device, token cancellation, rotation and the one-period catch-up, release, ndjson export and import with a record digest, the bound `validName` against the same fixture, the bound claim and authenticate, the calls a room makes (a known id offered by the room is kept for a new name, a rejoin returns the same id and ends the old token, release frees the name, a rotated token is returned without changing the book given), settings checks, the device store, the example, and that every method in `interfaces/guest-identity.json` exists in the implementation for each language it is tagged with. Platform: `python3 tests/native.py apple` compiles and runs the Swift checks of the same fixture; `python3 tests/native.py android` compiles the Kotlin checks (needs kotlinc, not installed on the authoring machine, so not run there).
 
-- `node --test tests/web.test.ts` (web, required-local; tools: node 26.5.0)
-- `python3 tests/native.py apple` (apple, platform; tools: python3 3.12.8, swiftc 6.4.2)
-- `python3 tests/native.py android` (android, platform; tools: python3 3.12.8, kotlinc 2.2.0, java 26.0.1)
+- `node --test tests/web.test.ts` (web, required-local; tools: node 26.5)
+- `python3 tests/native.py apple` (apple, platform; tools: python3 3.12, swiftc 6.4)
+- `python3 tests/native.py android` (android, platform; tools: python3 3.12, kotlinc 2.2, java 26.0)
 
 ## Scenarios and presentation
 Ann joins on a phone and closes the app; the app reopens and reconnects with the saved token. Ann types the same name on a laptop: it is the same guest, and the phone's token stops working. With rotation set to 60 seconds, a phone that was asleep during a rotation presents the old token within a minute and is handed the new one. Typing a name with a leading space or an accented letter is refused.
