@@ -34,13 +34,13 @@ test("client clipping and saving follow the same rules", () => {
   for (const [input, saved] of names.save) assert.equal(nameToSave(input, settings()), saved, JSON.stringify(input));
 });
 
-test("claiming a name: new guest, then the same guest from another device with the old token cancelled", () => {
+test("claiming a name: new guest, then the same guest returning with its token, the old token cancelled", () => {
   const d = deps();
   const first = claim(emptyBook(), "Ann", d, settings());
   assert.ok(first.ok);
   assert.equal(first.value.rejoined, false);
   d.time += 5;
-  const second = claim(first.value.book, "Ann", d, settings());
+  const second = claim(first.value.book, "Ann", d, settings(), first.value.token);
   assert.ok(second.ok);
   assert.equal(second.value.rejoined, true);
   assert.equal(second.value.id, first.value.id);
@@ -50,6 +50,21 @@ test("claiming a name: new guest, then the same guest from another device with t
   const other = claim(second.value.book, "Bob", d, settings());
   assert.ok(other.ok && other.value.id !== first.value.id);
   assert.equal(claim(emptyBook(), " Ann", d, settings()).ok, false);
+});
+
+test("a name in use is never taken back by the name alone", () => {
+  const d = deps();
+  const first = claim(emptyBook(), "Bob", d, settings());
+  assert.ok(first.ok);
+  if (!first.ok) return;
+  for (const token of [null, "", "someone-elses-token"]) {
+    const taken = claim(first.value.book, "Bob", d, settings(), token);
+    assert.deepEqual(taken.ok ? null : taken.error.code, "nameTaken", String(token));
+  }
+  assert.equal(authenticate(first.value.book, first.value.token, d, settings())?.name, "Bob", "the holder keeps the name");
+  const api = createIdentityApi();
+  assert.equal(api.claim(first.value.book, "Bob", d).ok, false);
+  assert.ok(api.claim(first.value.book, "Bob", d, first.value.token).ok);
 });
 
 test("the claim does not change the book it was given", () => {
@@ -126,9 +141,9 @@ test("device store keeps the name and a session per slot", () => {
   assert.equal(store.name(), "Ann");
 });
 
-test("example: the same name on two devices is one guest and only the newest device holds the seat", () => {
+test("example: the device with the token returns to its seat; another device typing the same name is refused", () => {
   const result = joinFromTwoDevices(settings(), deps());
-  assert.deepEqual(result, { sameGuest: true, phoneStillWorks: false, laptopWorks: true });
+  assert.deepEqual(result, { sameGuest: true, phoneStillWorks: true, laptopRefused: true });
 });
 
 test("the shipped ndjson fixture round-trips through import and export", () => {
@@ -192,7 +207,7 @@ test("room use (realtime-rooms services.identity): claim keeps a known id, relea
   assert.ok(first.ok);
   if (!first.ok) return;
   assert.equal(first.value.id, "seat-7");
-  const again = api.claim(first.value.book, "Ann", { ...d, newId: () => "other" });
+  const again = api.claim(first.value.book, "Ann", { ...d, newId: () => "other" }, first.value.token);
   assert.ok(again.ok && again.value.id === "seat-7" && again.value.rejoined && again.value.token !== first.value.token);
   if (!again.ok) return;
   assert.equal(api.authenticate(again.value.book, first.value.token, d), null, "the replaced token stops working at once after a claim");

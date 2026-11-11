@@ -12,7 +12,7 @@ Select this component for any application where people take part without account
 - No accounts or keys are needed.
 
 ## For the developer
-Store the `IdentityBook` where the room keeps its state and persist it after each `claim` or rotating `authenticate`. Supply `now`, `newId` and `newToken` (for example `crypto.randomUUID`). On each device keep the returned token with the room id and send it as a bearer token. No accounts or keys are needed. To move identities to another store, use `exportAll` and `importAll`.
+Store the `IdentityBook` where the room keeps its state and persist it after each `claim` or rotating `authenticate`. Supply `now`, `newId` and `newToken` (for example `crypto.randomUUID`). On each device keep the returned token with the room id and send it as a bearer token, on the join request too: a name in use is given back only with its token. No accounts or keys are needed. To move identities to another store, use `exportAll` and `importAll`.
 
 ## How to check
 From the component directory:

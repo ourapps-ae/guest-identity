@@ -1,12 +1,12 @@
 // Guests are known by the name they type; no account, no password. A name belongs to one record.
-// Claiming the name gives the caller a private token and cancels the one before, so the newest
-// device holds the seat. A token older than the rotation period is swapped for a fresh one the
+// A free name goes to whoever claims it; a name in use goes back only to the holder of its token, and
+// claiming it again gives a new private token and cancels the one before. A token older than the rotation period is swapped for a fresh one the
 // next time it is used. Pure functions over a plain book: storage belongs to the caller.
 export type IdentitySettings = { nameMinLength: number; nameMaxLength: number; tokenRotationSeconds: number };
 export type IdentityRecord = { id: string; name: string; token: string; previousToken: string | null; issuedAt: number; lastSeenAt: number };
 export type IdentityBook = { records: { [id: string]: IdentityRecord } };
 export type Deps = { now: () => number; newId: () => string; newToken: () => string };
-export type IdentityError = { code: "badName" | "badToken"; message: string };
+export type IdentityError = { code: "badName" | "badToken" | "nameTaken"; message: string };
 export type Result<T> = { ok: true; value: T } | { ok: false; error: IdentityError };
 
 export const DEFAULT_SETTINGS: IdentitySettings = { nameMinLength: 1, nameMaxLength: 20, tokenRotationSeconds: 0 };
@@ -36,16 +36,25 @@ export function findByName(book: IdentityBook, name: string): IdentityRecord | u
   return Object.values(book.records).find((r) => r.name === name);
 }
 
-// Take the name: a new guest, or the same guest returning from any device. The previous token stops working.
-export function claim(book: IdentityBook, name: unknown, deps: Deps, settings: IdentitySettings = DEFAULT_SETTINGS): Result<{ book: IdentityBook; id: string; token: string; rejoined: boolean }> {
+// Take the name: a new guest, or the guest returning with the token the name was last given (`presented`).
+// A name in use refuses a claim without its token (nameTaken). The previous token stops working.
+export function claim(book: IdentityBook, name: unknown, deps: Deps, settings: IdentitySettings = DEFAULT_SETTINGS, presented: string | null = null): Result<{ book: IdentityBook; id: string; token: string; rejoined: boolean }> {
   const checked = checkName(name, settings);
   if (!checked.ok) return checked;
   const existing = findByName(book, checked.value);
   const now = deps.now();
+  if (existing && !holds(existing, presented, now, settings)) return { ok: false, error: { code: "nameTaken", message: "That name is in use here. Choose another name." } };
   const id = existing?.id ?? deps.newId();
   const token = deps.newToken();
   const record: IdentityRecord = { id, name: checked.value, token, previousToken: null, issuedAt: now, lastSeenAt: now };
   return { ok: true, value: { book: { records: { ...book.records, [id]: record } }, id, token, rejoined: existing !== undefined } };
+}
+
+// True when `token` is the record's current token, or the one it replaced within the rotation period.
+function holds(record: IdentityRecord, token: string | null, now: number, settings: IdentitySettings): boolean {
+  if (!token) return false;
+  const graceMs = settings.tokenRotationSeconds * 1000;
+  return record.token === token || (record.previousToken === token && graceMs > 0 && now - record.issuedAt < graceMs);
 }
 
 export type Authenticated = { book: IdentityBook; id: string; name: string; rotatedToken: string | null };
@@ -106,7 +115,8 @@ export type IdentityApi = {
   // True for a name a person may sit down under (the `nameMinLength` to `nameMaxLength` rule of `validName`).
   validName(name: unknown): boolean;
   checkName(name: unknown): Result<string>;
-  claim(book: IdentityBook, name: unknown, deps: Deps): ReturnType<typeof claim>;
+  // `token`: the one the name was last given, needed to take back a name in use.
+  claim(book: IdentityBook, name: unknown, deps: Deps, token?: string | null): ReturnType<typeof claim>;
   authenticate(book: IdentityBook, token: string, deps: Deps): Authenticated | null;
   findByName(book: IdentityBook, name: string): IdentityRecord | undefined;
   release(book: IdentityBook, id: string): IdentityBook;
@@ -118,7 +128,7 @@ export function createIdentityApi(settings: Partial<IdentitySettings> = {}): Ide
     settings: bound,
     validName: (name) => validName(name, bound),
     checkName: (name) => checkName(name, bound),
-    claim: (book, name, deps) => claim(book, name, deps, bound),
+    claim: (book, name, deps, token = null) => claim(book, name, deps, bound, token),
     authenticate: (book, token, deps) => authenticate(book, token, deps, bound),
     findByName,
     release,
