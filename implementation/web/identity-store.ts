@@ -54,3 +54,6 @@ export function createIdentityStore(storage: KeyValueStorage, settings: Identity
     },
   };
 }
+
+// The store createIdentityStore returns.
+export type IdentityStore = ReturnType<typeof createIdentityStore>;

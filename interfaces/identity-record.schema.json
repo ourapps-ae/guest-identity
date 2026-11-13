@@ -42,5 +42,6 @@
       "type": "integer",
       "description": "Milliseconds since the epoch of the last authenticated request."
     }
-  }
+  },
+  "x-ourapps-modules": {}
 }

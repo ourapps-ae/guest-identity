@@ -19,9 +19,21 @@
       "template": false
     },
     {
+      "destination": "components/guest-identity/server/index.ts",
+      "executable": false,
+      "source": "implementation/server/index.ts",
+      "template": false
+    },
+    {
       "destination": "components/guest-identity/web/identity-store.ts",
       "executable": false,
       "source": "implementation/web/identity-store.ts",
+      "template": false
+    },
+    {
+      "destination": "components/guest-identity/web/index.ts",
+      "executable": false,
+      "source": "implementation/web/index.ts",
       "template": false
     }
   ],
@@ -32,7 +44,9 @@
       "components/guest-identity/android/src/main/java/ae/identity/GuestIdentity.kt",
       "components/guest-identity/apple/Sources/GuestIdentity.swift",
       "components/guest-identity/server/identity.ts",
-      "components/guest-identity/web/identity-store.ts"
+      "components/guest-identity/server/index.ts",
+      "components/guest-identity/web/identity-store.ts",
+      "components/guest-identity/web/index.ts"
     ]
   },
   "collect": [
@@ -120,7 +134,15 @@
     },
     {
       "executable": false,
+      "path": "implementation/server/index.ts"
+    },
+    {
+      "executable": false,
       "path": "implementation/web/identity-store.ts"
+    },
+    {
+      "executable": false,
+      "path": "implementation/web/index.ts"
     },
     {
       "executable": false,

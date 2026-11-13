@@ -1,7 +1,7 @@
 import Foundation
 
 // The rules for a guest's name, as the server applies them.
-struct NameRules: Equatable {
+public struct NameRules: Equatable {
     var minLength = 1
     var maxLength = 20
 
@@ -44,7 +44,7 @@ struct IdentityKeys {
 }
 
 // What a device keeps of who it is: the typed name and, per slot, the private token and its room.
-struct IdentityStore {
+public struct IdentityStore {
     let store: KeyValueStore
     let rules: NameRules
     var keys = IdentityKeys()
