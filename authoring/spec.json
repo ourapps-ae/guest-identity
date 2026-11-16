@@ -1,6 +1,6 @@
 {
   "name": "guest-identity",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "title": "Guest identity",
   "keepsData": true,
   "description": "Names without accounts, private tokens that rotate, and returning to a name with its token.",
@@ -46,10 +46,10 @@
     }
   ],
   "platforms": [
-    "server",
-    "web",
+    "android",
     "apple",
-    "android"
+    "server",
+    "web"
   ],
   "tools": {
     "node": "26.5.0",
@@ -193,5 +193,151 @@
       }
     ],
     "notes": "No limits cited; none were checked."
+  },
+  "classes": [
+    {
+      "reference": {
+        "name": "ourapps-ae/guest-identity-class",
+        "version": "1.0.0",
+        "digest": "5a471bba4b1ea08cc3cd4d06045ea552cc59e25da05c93e364bb2b9af4146915"
+      },
+      "descriptor": {
+        "format": 1,
+        "name": "ourapps-ae/guest-identity-class",
+        "version": "1.0.0",
+        "provides": [
+          {
+            "type": "ae/guest-identity",
+            "version": "1.0.0",
+            "path": "classes/guest-identity-class/guest-identity.json",
+            "modules": {
+              "web": [
+                "web/index.ts"
+              ],
+              "server": [
+                "server/index.ts"
+              ],
+              "android": [
+                "android/src/main/java"
+              ],
+              "ios": [
+                "apple/Sources"
+              ],
+              "macos": [
+                "apple/Sources"
+              ],
+              "tvos": [
+                "apple/Sources"
+              ],
+              "windows": [
+                "web/index.ts"
+              ]
+            }
+          }
+        ],
+        "requires": [],
+        "settings": {
+          "type": "object",
+          "properties": {},
+          "required": [],
+          "additionalProperties": false
+        },
+        "inventory": [
+          {
+            "path": "classes/guest-identity-class/check.mjs",
+            "digest": "185fa1b68bc4382a0b194ecf05f3ecc4df4bafe78a133bcc724c2faba859359a"
+          },
+          {
+            "path": "classes/guest-identity-class/guest-identity.json",
+            "digest": "1bbc2885818ff536216e69837b325043d0a9ca757774aaf76cdf7e9fa654ce71"
+          },
+          {
+            "path": "classes/guest-identity-class/runtime.mjs",
+            "digest": "7440f3891614c423f74668cb5a2445fea58bbfa4d7c740c8e8a855d1d9300d43"
+          }
+        ],
+        "verification": [
+          {
+            "id": "shared",
+            "root": "package",
+            "argv": [
+              "node",
+              "classes/guest-identity-class/check.mjs"
+            ],
+            "cwd": ".",
+            "prepare": [],
+            "tools": {
+              "node": "26.5"
+            },
+            "fixtures": [
+              "classes/guest-identity-class/check.mjs"
+            ],
+            "locks": [],
+            "network": false,
+            "timeoutSeconds": 60,
+            "expectedExit": 0,
+            "scope": "required-local",
+            "requirements": []
+          }
+        ]
+      }
+    }
+  ],
+  "implements": [
+    {
+      "name": "ourapps-ae/guest-identity-class",
+      "version": "1.0.0",
+      "digest": "5a471bba4b1ea08cc3cd4d06045ea552cc59e25da05c93e364bb2b9af4146915"
+    }
+  ],
+  "upstream": [],
+  "compatibility": {
+    "runtimes": {
+      "node": ">=26.5.0 <27.0.0",
+      "swift": "=6.4.2",
+      "ios": ">=17.0.0",
+      "macos": ">=14.0.0",
+      "tvos": ">=17.0.0",
+      "kotlin": "=2.3.20",
+      "java": ">=17.0.0 <27.0.0",
+      "android": ">=8.0.0"
+    },
+    "frameworks": {},
+    "dependencies": [],
+    "styles": {
+      "scope": "none",
+      "namespaces": [],
+      "conflicts": []
+    }
+  },
+  "maintenance": {
+    "owners": [
+      "Level N Ltd"
+    ],
+    "contact": "https://github.com/ourapps-ae/guest-identity/issues",
+    "repository": "https://github.com/ourapps-ae/guest-identity",
+    "updates": {
+      "source": "https://github.com/ourapps-ae/guest-identity/releases",
+      "strategy": "manual"
+    }
+  },
+  "supportedPlatforms": [
+    "android",
+    "ios",
+    "macos",
+    "server",
+    "tvos",
+    "web",
+    "windows"
+  ],
+  "licence": "Apache-2.0",
+  "licenceFile": "LICENCE",
+  "noticeFile": "NOTICE",
+  "templates": [],
+  "modules": {
+    "web": "web/index.ts",
+    "server": "server/index.ts",
+    "android": "android/src/main/java",
+    "apple": "apple/Sources"
   }
 }

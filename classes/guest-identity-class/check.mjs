@@ -1,0 +1,16 @@
+import { assert, load } from './runtime.mjs';
+const m = await load('server/index.ts');
+let serial = 0;
+const deps = { now: () => 1000, newId: () => 'person', newToken: () => `token-${++serial}` };
+const empty = m.emptyBook();
+const first = m.claim(empty, 'Ada', deps);
+assert.equal(first.ok, true);
+assert.deepEqual(empty, { records: {} });
+assert.equal(m.claim(first.value.book, 'Ada', deps).error.code, 'nameTaken');
+const second = m.claim(first.value.book, 'Ada', deps, m.DEFAULT_SETTINGS, first.value.token);
+assert.equal(second.value.rejoined, true);
+assert.equal(m.authenticate(second.value.book, first.value.token, deps), null);
+assert.equal(m.authenticate(second.value.book, second.value.token, deps).id, 'person');
+assert.equal(m.validName(' Ada '), false);
+assert.equal(m.validName(''), false);
+assert.deepEqual(m.importAll(m.exportAll(second.value.book)).value, second.value.book);
