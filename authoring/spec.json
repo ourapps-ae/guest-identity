@@ -1,6 +1,6 @@
 {
   "name": "guest-identity",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "title": "Guest identity",
   "keepsData": true,
   "description": "Names without accounts, private tokens that rotate, and returning to a name with its token.",
@@ -198,13 +198,17 @@
     {
       "reference": {
         "name": "ourapps-ae/guest-identity-class",
-        "version": "1.0.0",
-        "digest": "5a471bba4b1ea08cc3cd4d06045ea552cc59e25da05c93e364bb2b9af4146915"
+        "version": "1.1.0",
+        "digest": "b5f950c1986ac25c6820a37e208da0c76fec0491fb68d97d6813106df6f809a9"
       },
       "descriptor": {
-        "format": 1,
+        "format": 2,
         "name": "ourapps-ae/guest-identity-class",
-        "version": "1.0.0",
+        "version": "1.1.0",
+        "title": "Guest identity",
+        "summary": "Sign-in by name with a device token, no account",
+        "category": "people-and-accounts/sign-in",
+        "presentation": "none",
         "provides": [
           {
             "type": "ae/guest-identity",
@@ -286,8 +290,8 @@
   "implements": [
     {
       "name": "ourapps-ae/guest-identity-class",
-      "version": "1.0.0",
-      "digest": "5a471bba4b1ea08cc3cd4d06045ea552cc59e25da05c93e364bb2b9af4146915"
+      "version": "1.1.0",
+      "digest": "b5f950c1986ac25c6820a37e208da0c76fec0491fb68d97d6813106df6f809a9"
     }
   ],
   "upstream": [],
@@ -298,7 +302,7 @@
       "ios": ">=17.0.0",
       "macos": ">=14.0.0",
       "tvos": ">=17.0.0",
-      "kotlin": "=2.3.20",
+      "kotlin": "=2.4.21",
       "java": ">=17.0.0 <27.0.0",
       "android": ">=8.0.0"
     },
@@ -573,5 +577,11 @@
         "manual": "Without the package manager, install Node 26 from nodejs.org (the installer, or the zip or tar archive with its folder put first on PATH); on Linux also from the NodeSource repository."
       }
     ]
-  }
+  },
+  "release": {
+    "channel": "features",
+    "fixes": []
+  },
+  "images": [],
+  "vulnerabilityWaivers": []
 }
