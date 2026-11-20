@@ -1,6 +1,6 @@
 {
   "name": "guest-identity",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "title": "Guest identity",
   "keepsData": true,
   "description": "Names without accounts, private tokens that rotate, and returning to a name with its token.",
